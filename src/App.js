@@ -15,44 +15,50 @@ import Users from './Components/Users';
 import UserDetails from './Components/UserDetails';
 import Admin from './Components/Admin';
 import Loading from './Components/Loading';
+import Login from './Components/Login';
+import { AuthProvider } from './Utils/auth';
+import RequireAuth from './Components/RequireAuth';
 
 export const LazyAbout = lazy(() => import('./Components/About'));
 function App() {
   return (
     <>
-      <Navbar />
-      <Routes>
-        <Route path='/' element={<Home />} />
-        {/* <Route
-          path='/about'
-          element={
-            <Suspense fallback='loading ... '>
-              <LazyAbout />
-            </Suspense>
-          }
-        /> */}
+      <AuthProvider>
+        <Navbar />
+        <Routes>
+          <Route path='/' element={<Home />} />
 
-        <Route
-          path='/about'
-          element={
-            <Suspense fallback={<Loading />}>
-              <LazyAbout />
-            </Suspense>
-          }
-        />
+          <Route
+            path='/about'
+            element={
+              <Suspense fallback={<Loading />}>
+                <LazyAbout />
+              </Suspense>
+            }
+          />
 
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/products' element={<Products />}>
-          <Route index element={<Featured />} />
-          <Route path='featured' element={<Featured />} />
-          <Route path='new' element={<New />} />
-        </Route>
-        <Route path='users' element={<Users />}>
-          <Route path=':userId' element={<UserDetails />} />
-          <Route path='admin' element={<Admin />} />
-        </Route>
-        <Route path='*' element={<PageNotFound />} />
-      </Routes>
+          <Route
+            path='/profile'
+            element={
+              <RequireAuth>
+                <Profile />
+              </RequireAuth>
+            }
+          />
+
+          <Route path='/products' element={<Products />}>
+            <Route index element={<Featured />} />
+            <Route path='featured' element={<Featured />} />
+            <Route path='new' element={<New />} />
+          </Route>
+          <Route path='users' element={<Users />}>
+            <Route path=':userId' element={<UserDetails />} />
+            <Route path='admin' element={<Admin />} />
+          </Route>
+          <Route path='/login' element={<Login />} />
+          <Route path='*' element={<PageNotFound />} />
+        </Routes>
+      </AuthProvider>
     </>
   );
 }
