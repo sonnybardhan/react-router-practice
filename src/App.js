@@ -11,22 +11,31 @@ import PageNotFound from './Components/PageNotFound';
 import Featured from './Components/Featured';
 import New from './Components/New';
 import Users from './Components/Users';
-import UserDEtails from './Components/UserDetails';
+// import UserDEtails from './Components/UserDetails';
 import UserDetails from './Components/UserDetails';
 import Admin from './Components/Admin';
+import Loading from './Components/Loading';
 
 export const LazyAbout = lazy(() => import('./Components/About'));
-
 function App() {
   return (
     <>
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route
+        {/* <Route
           path='/about'
           element={
             <Suspense fallback='loading ... '>
+              <LazyAbout />
+            </Suspense>
+          }
+        /> */}
+
+        <Route
+          path='/about'
+          element={
+            <Suspense fallback={<Loading />}>
               <LazyAbout />
             </Suspense>
           }
